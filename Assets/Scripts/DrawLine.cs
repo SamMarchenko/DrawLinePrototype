@@ -10,6 +10,7 @@ namespace Scripts
         [SerializeField] private Vector3 _previousPos;
         [SerializeField, Range(0, 1)] private float minDistance = 0.1f;
 
+        public LineRenderer LineRenderer => _line;
         public int LinePosCount => _line.positionCount;
 
         public void Init(Vector3 startPos)

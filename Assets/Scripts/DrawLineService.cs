@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 namespace Scripts
@@ -43,6 +44,7 @@ namespace Scripts
                 {
                     return;
                 }
+
                 _isDrawing = false;
                 if (CheckFinishLinePos() == false)
                 {
@@ -52,8 +54,17 @@ namespace Scripts
                 {
                     _lines.Add(_currentLine);
                     _playerLineDictionary.Add(_currentPlayer, _currentLine);
+                    _currentPlayer.InitUnitMoving(GetPointsFromLine());
                 }
             }
+        }
+
+        private List<Vector3> GetPointsFromLine()
+        {
+            Vector3[] pathPoints = new Vector3[_currentLine.LineRenderer.positionCount];
+            
+            _currentLine.LineRenderer.GetPositions(pathPoints);
+            return pathPoints.ToList();
         }
 
         private bool CheckPlayerHasLine()

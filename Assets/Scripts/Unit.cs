@@ -10,47 +10,50 @@ namespace Scripts
     public class Unit : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
         [SerializeField] private float _pathLength;
-        private const float _moveTime = 4f;
+        private const float _moveTime = 10f;
         private bool _isMoving;
         private Sequence _sequence;
-        
-        public Vector3[] PathPoints = new Vector3[]{};
+
+        public Vector3[] PathPoints = new Vector3[] { };
         public List<Vector3> DrawnLinePoints = new List<Vector3>();
 
         public bool CanMove;
         public bool IsPointed;
+        private float _speed;
+        private float _currentTime = 0f;
 
         public void InitUnitMoving(List<Vector3> points)
         {
             DrawnLinePoints = points;
-            PathPoints = BezierUtility.GetBeizerPointList(points.Count,DrawnLinePoints);
+            PathPoints = BezierUtility.GetBezierPointList(points.Count, DrawnLinePoints);
             _pathLength = BezierUtility.FindPathLength(PathPoints);
 
-            CanMove = true;
+
+            _speed = _pathLength / _moveTime;
+
+
+            Moving();
         }
-        
-        
-        void Update()
+
+
+        private void Moving()
         {
-            if (CanMove && !_isMoving)
-            {
-                StartCoroutine(Move());
-            }
-            
+            StartCoroutine(Move());
         }
-        
+
 
         public IEnumerator Move()
         {
-            _isMoving = true;
+            var time = _moveTime / PathPoints.Length;
             for (int i = 0; i < PathPoints.Length - 1; i++)
             {
-                transform.position = Vector3.Lerp(PathPoints[i], PathPoints[i + 1], _moveTime/PathPoints.Length);
-                yield return new WaitForSeconds(0.02f);
+                transform.position = Vector3.Lerp(PathPoints[i], PathPoints[i + 1], _speed * Time.deltaTime);
+                transform.DOMove(PathPoints[i + 1], time * Time.deltaTime);
+
+                yield return null;
             }
         }
-        
-        
+
 
         public void OnPointerExit(PointerEventData eventData)
         {

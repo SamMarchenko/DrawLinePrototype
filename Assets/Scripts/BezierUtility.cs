@@ -17,7 +17,7 @@ namespace Scripts
             return curveLength;
         }
 
-        public static Vector3[] GetBeizerPointList(int segmentNum,List<Vector3> p)
+        public static Vector3[] GetBezierPointList(int segmentNum,List<Vector3> p)
         {
             Vector3[] path = new Vector3[segmentNum];
             for (int i = 1; i <= segmentNum; i++)

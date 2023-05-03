@@ -11,6 +11,7 @@ namespace Scripts
         [SerializeField] private Unit _player2;
         [SerializeField] private Finish _finish2;
         public Dictionary<Unit, Finish> PlayerFinishDictionary = new Dictionary<Unit, Finish>();
+        
 
         private void Start()
         {

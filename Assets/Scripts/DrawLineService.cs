@@ -54,16 +54,31 @@ namespace Scripts
                 {
                     _lines.Add(_currentLine);
                     _playerLineDictionary.Add(_currentPlayer, _currentLine);
-                    _currentPlayer.InitUnitMoving(GetPointsFromLine());
+                    
+                    //todo: временный код для тестов
+                    if (_playerLineDictionary.Count == 2)
+                    {
+                        StartPlayerMoving();
+                    }
                 }
             }
         }
 
-        private List<Vector3> GetPointsFromLine()
+        //todo: временный код для тестов
+        private void StartPlayerMoving()
         {
-            Vector3[] pathPoints = new Vector3[_currentLine.LineRenderer.positionCount];
+            foreach (var unit in _playerLineDictionary.Keys)
+            {
+                DrawLine line = _playerLineDictionary[unit];
+                unit.InitUnitMoving(GetPointsFromLine(line.LineRenderer));
+            }
+        }
+
+        private List<Vector3> GetPointsFromLine(LineRenderer line)
+        {
+            Vector3[] pathPoints = new Vector3[line.positionCount];
             
-            _currentLine.LineRenderer.GetPositions(pathPoints);
+            line.GetPositions(pathPoints);
             return pathPoints.ToList();
         }
 

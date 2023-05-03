@@ -13,9 +13,8 @@ namespace Scripts
         public LineRenderer LineRenderer => _line;
         public int LinePosCount => _line.positionCount;
 
-        public void Init(Vector3 startPos)
+        public void Init()
         {
-            _previousPos = startPos;
             _line.positionCount = 1;
         }
 

@@ -7,6 +7,9 @@ namespace Scripts
         , IPointerExitHandler
         , IPointerEnterHandler
     {
+
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        public SpriteRenderer SpriteRenderer => _spriteRenderer;
         public bool IsPointed;
 
         public void OnPointerExit(PointerEventData eventData)

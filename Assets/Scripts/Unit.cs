@@ -9,18 +9,22 @@ namespace Scripts
 {
     public class Unit : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private float _pathLength;
         private const float _moveTime = 10f;
         private bool _isMoving;
         private Sequence _sequence;
+        private float _speed;
+        private float _currentTime = 0f;
 
+        
         public Vector3[] PathPoints = new Vector3[] { };
         public List<Vector3> DrawnLinePoints = new List<Vector3>();
 
         public bool CanMove;
         public bool IsPointed;
-        private float _speed;
-        private float _currentTime = 0f;
+        public SpriteRenderer SpriteRenderer => _spriteRenderer;
+        
 
         public void InitUnitMoving(List<Vector3> points)
         {

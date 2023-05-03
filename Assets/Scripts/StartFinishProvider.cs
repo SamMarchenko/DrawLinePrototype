@@ -4,19 +4,21 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public class StartFinishProvider: MonoBehaviour
+    public class StartFinishProvider
     {
-        [SerializeField] private Unit _player1;
-        [SerializeField] private Finish _finish1;
-        [SerializeField] private Unit _player2;
-        [SerializeField] private Finish _finish2;
+        private readonly PlayerFinishFactory _factory;
         public Dictionary<Unit, Finish> PlayerFinishDictionary = new Dictionary<Unit, Finish>();
-        
 
-        private void Start()
+        public StartFinishProvider(PlayerFinishFactory factory)
         {
-            PlayerFinishDictionary.Add(_player1, _finish1);
-            PlayerFinishDictionary.Add(_player2, _finish2);
+            _factory = factory;
+            Init();
+        }
+
+        private void Init()
+        {
+            PlayerFinishDictionary.Add(_factory.GetPlayer(0, Color.cyan), _factory.GetFinish(0, Color.blue));
+            PlayerFinishDictionary.Add(_factory.GetPlayer(1, Color.magenta), _factory.GetFinish(1, Color.red));
         }
     }
 }

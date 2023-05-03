@@ -1,23 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Scripts.Factories;
 using Unity.Collections;
 using UnityEngine;
+using Zenject;
+using Object = UnityEngine.Object;
 
 namespace Scripts
 {
-    public class DrawLineService : MonoBehaviour
+    public class DrawLineService : ITickable
     {
-        [SerializeField] private StartFinishProvider _startFinishProvider;
-        [SerializeField] private DrawLine _linePrefab;
-        [SerializeField] private List<DrawLine> _lines = new List<DrawLine>();
+        private StartFinishProvider _startFinishProvider;
+        private readonly LineFactory _lineFactory;
+        private List<DrawLine> _lines = new List<DrawLine>();
         private Dictionary<Unit, DrawLine> _playerLineDictionary = new Dictionary<Unit, DrawLine>();
-        [SerializeField] private DrawLine _currentLine;
-        [SerializeField] private Unit _currentPlayer;
+        private DrawLine _currentLine;
+        private Unit _currentPlayer;
         private bool _isDrawing;
 
+        public DrawLineService(StartFinishProvider startFinishProvider, LineFactory lineFactory)
+        {
+            _startFinishProvider = startFinishProvider;
+            _lineFactory = lineFactory;
+        }
+        
 
-        private void Update()
+        //todo: временный код для тестов
+        private void StartPlayerMoving()
+        {
+            foreach (var unit in _playerLineDictionary.Keys)
+            {
+                DrawLine line = _playerLineDictionary[unit];
+                unit.InitUnitMoving(GetPointsFromLine(line.LineRenderer));
+            }
+        }
+
+        private List<Vector3> GetPointsFromLine(LineRenderer line)
+        {
+            Vector3[] pathPoints = new Vector3[line.positionCount];
+            
+            line.GetPositions(pathPoints);
+            return pathPoints.ToList();
+        }
+
+        private bool CheckPlayerHasLine()
+        {
+            return _playerLineDictionary.ContainsKey(_currentPlayer);
+        }
+
+        private void DrawLine()
+        {
+            _currentLine = _lineFactory.CreateLine(_currentPlayer.SpriteRenderer.color);
+            _currentLine.Init();
+        }
+
+        private bool CheckFinishLinePos()
+        {
+            return _startFinishProvider.PlayerFinishDictionary[_currentPlayer].IsPointed;
+        }
+
+        private bool CheckStartLinePos()
+        {
+            var players = _startFinishProvider.PlayerFinishDictionary.Keys;
+            foreach (var player in players)
+            {
+                if (player.IsPointed)
+                {
+                    _currentPlayer = player;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void DestroyLine()
+        {
+            Object.Destroy(_currentLine.gameObject);
+            _currentLine = null;
+            _currentPlayer = null;
+        }
+
+        public void Tick()
         {
             if (Input.GetMouseButton(0))
             {
@@ -29,7 +94,7 @@ namespace Scripts
                     if (CheckPlayerHasLine())
                         return;
 
-                    CreateLine();
+                    DrawLine();
                     _isDrawing = true;
                 }
                 else
@@ -62,62 +127,6 @@ namespace Scripts
                     }
                 }
             }
-        }
-
-        //todo: временный код для тестов
-        private void StartPlayerMoving()
-        {
-            foreach (var unit in _playerLineDictionary.Keys)
-            {
-                DrawLine line = _playerLineDictionary[unit];
-                unit.InitUnitMoving(GetPointsFromLine(line.LineRenderer));
-            }
-        }
-
-        private List<Vector3> GetPointsFromLine(LineRenderer line)
-        {
-            Vector3[] pathPoints = new Vector3[line.positionCount];
-            
-            line.GetPositions(pathPoints);
-            return pathPoints.ToList();
-        }
-
-        private bool CheckPlayerHasLine()
-        {
-            return _playerLineDictionary.ContainsKey(_currentPlayer);
-        }
-
-        private void CreateLine()
-        {
-            _currentLine = Instantiate(_linePrefab);
-            _currentLine.Init(transform.position);
-        }
-
-        private bool CheckFinishLinePos()
-        {
-            return _startFinishProvider.PlayerFinishDictionary[_currentPlayer].IsPointed;
-        }
-
-        private bool CheckStartLinePos()
-        {
-            var players = _startFinishProvider.PlayerFinishDictionary.Keys;
-            foreach (var player in players)
-            {
-                if (player.IsPointed)
-                {
-                    _currentPlayer = player;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void DestroyLine()
-        {
-            Destroy(_currentLine.gameObject);
-            _currentLine = null;
-            _currentPlayer = null;
         }
     }
 }

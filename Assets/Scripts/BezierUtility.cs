@@ -6,27 +6,15 @@ namespace Scripts
     public static class BezierUtility
     {
 
-        public static float FindPathLength(Vector3[] points)
+        public static float FindPathLength(List<Vector3> points)
         {
             var curveLength = 0f;
-            for (var i = 0; i < points.Length - 1; i++)
+            for (var i = 0; i < points.Count - 1; i++)
             {
                 curveLength += Vector3.Distance(points[i], points[i + 1]);
             }
             
             return curveLength;
-        }
-
-        public static Vector3[] GetBezierPointList(int segmentNum,List<Vector3> p)
-        {
-            Vector3[] path = new Vector3[segmentNum];
-            for (int i = 1; i <= segmentNum; i++)
-            {
-                float t = i / (float)segmentNum;
-                Vector3 pixel = BezierPoint(t, p);
-                path[i - 1] = pixel;
-            }
-            return path;
         }
 
         public static Vector3 BezierPoint(float t, List<Vector3> p)

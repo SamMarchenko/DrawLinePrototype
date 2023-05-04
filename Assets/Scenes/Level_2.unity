@@ -458,6 +458,17 @@ PrefabInstance:
       objectReference: {fileID: 519420031}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac75438e8104fde4da8c75e27bbe98d8, type: 3}
+--- !u!114 &773766908 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1889483560, guid: ac75438e8104fde4da8c75e27bbe98d8, type: 3}
+  m_PrefabInstance: {fileID: 773766907}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131de73cb514f79af47d4b12ef5738d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &930796064
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,6 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 4517616100234384425, guid: 36d89e2af2af4d2409b618ceea11887f, type: 3}
-  _finishPrefab: {fileID: 4208191487126217861, guid: f9ce54f00fe2ab34288cca16e29c7a19, type: 3}
-  _linePrefab: {fileID: -9149085750550077090, guid: 31f95940a09b84f41b6c547d88ec4856, type: 3}
+  finishViewPrefab: {fileID: 4208191487126217861, guid: f9ce54f00fe2ab34288cca16e29c7a19, type: 3}
+  lineViewPrefab: {fileID: -9149085750550077090, guid: 31f95940a09b84f41b6c547d88ec4856, type: 3}
   _spawnPositions: {fileID: 305595487}
+  _coreUIController: {fileID: 773766908}

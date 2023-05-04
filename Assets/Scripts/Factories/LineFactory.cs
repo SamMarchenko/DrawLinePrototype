@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
+using Views;
 
-namespace Scripts.Factories
+namespace Factories
 {
     public class LineFactory
     {
-        private DrawLine _linePrefab;
-        public LineFactory(DrawLine drawLine)
-        {
-            _linePrefab = drawLine;
-        }
+        private DrawLineView _lineViewPrefab;
+        public LineFactory(DrawLineView drawLineView) => 
+            _lineViewPrefab = drawLineView;
 
-        public DrawLine CreateLine(Color color)
+        public DrawLineView CreateLine(Color color)
         {
-            var line = MonoBehaviour.Instantiate(_linePrefab);
+            var line = MonoBehaviour.Instantiate(_lineViewPrefab);
             line.LineRenderer.material.color = color;
             return line;
         }

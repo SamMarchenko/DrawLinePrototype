@@ -1,8 +1,10 @@
 using System;
+using Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Views;
 
-namespace Scripts
+namespace Services
 {
     public class WinScreenService : IDisposable
     {
@@ -16,7 +18,7 @@ namespace Scripts
         public void Init(WinScreenView view)
         {
             _view = view;
-            _view.NextLvlBtn.onClick.AddListener(Call);
+            _view.NextLvlBtn.onClick.AddListener(LoadNextLevel);
             _numberActiveScene = SceneManager.GetActiveScene().buildIndex + 1;
 
             _nextLevelName = _numberActiveScene == SceneManager.sceneCountInBuildSettings
@@ -24,24 +26,16 @@ namespace Scripts
                 : "Level_" + (_numberActiveScene + 1);
         }
 
-        private void Call()
-        {
-            SceneTransition.SwitchToScene(_nextLevelName);
-        }
-
-        public void Show()
-        {
+        public void Show() => 
             _view.gameObject.SetActive(true);
-        }
 
-        public void Hide()
-        {
+        public void Hide() => 
             _view.gameObject.SetActive(false);
-        }
 
-        public void Dispose()
-        {
+        public void Dispose() => 
             _view.NextLvlBtn.onClick.RemoveAllListeners();
-        }
+
+        private void LoadNextLevel() => 
+            SceneTransition.SwitchToScene(_nextLevelName);
     }
 }

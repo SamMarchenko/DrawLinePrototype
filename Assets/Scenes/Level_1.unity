@@ -537,8 +537,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 4517616100234384425, guid: 36d89e2af2af4d2409b618ceea11887f, type: 3}
-  _finishPrefab: {fileID: 4208191487126217861, guid: f9ce54f00fe2ab34288cca16e29c7a19, type: 3}
-  _linePrefab: {fileID: -9149085750550077090, guid: 31f95940a09b84f41b6c547d88ec4856, type: 3}
+  finishViewPrefab: {fileID: 4208191487126217861, guid: f9ce54f00fe2ab34288cca16e29c7a19, type: 3}
+  lineViewPrefab: {fileID: -9149085750550077090, guid: 31f95940a09b84f41b6c547d88ec4856, type: 3}
   _spawnPositions: {fileID: 305595487}
   _coreUIController: {fileID: 1889483560}
 --- !u!114 &1889483560 stripped

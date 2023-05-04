@@ -1,17 +1,17 @@
 ﻿using System;
-using Scripts.States;
-using UnityEngine;
+using Services;
 
 namespace Scripts
 {
-    public class GameCycleController
+    public class GameCycleController : IDisposable
     {
         private readonly DrawLineService _drawLineService;
         private readonly MovingService _movingService;
         private readonly FailScreenService _failScreenService;
         private readonly WinScreenService _winScreenService;
 
-        public GameCycleController(DrawLineService drawLineService, MovingService movingService, FailScreenService failScreenService,
+        public GameCycleController(DrawLineService drawLineService, MovingService movingService,
+            FailScreenService failScreenService,
             WinScreenService winScreenService)
         {
             _drawLineService = drawLineService;
@@ -24,12 +24,9 @@ namespace Scripts
             _drawLineService.CanDraw = true;
         }
 
-        private void SubscribeServices()
-        {
-            _drawLineService.OnFinishDrawingAllLines += OnFinishDrawingAllLines;
-            _movingService.OnSuccessMoved += OnSuccessMoved;
-            _movingService.OnFailMoved += OnFailMoved;
-        }
+        public void Dispose() =>
+            UnSubscribeServices();
+
 
         private void OnFailMoved()
         {
@@ -37,14 +34,24 @@ namespace Scripts
             _failScreenService.Show();
         }
 
-        private void OnSuccessMoved()
-        {
+        private void OnSuccessMoved() =>
             _winScreenService.Show();
+
+        private void OnFinishDrawingAllLines() =>
+            _movingService.BeginMove();
+
+        private void SubscribeServices()
+        {
+            _drawLineService.OnFinishDrawingAllLines += OnFinishDrawingAllLines;
+            _movingService.OnSuccessMoved += OnSuccessMoved;
+            _movingService.OnFailMoved += OnFailMoved;
         }
 
-        private void OnFinishDrawingAllLines()
+        private void UnSubscribeServices()
         {
-            _movingService.BeginMove();
+            _drawLineService.OnFinishDrawingAllLines -= OnFinishDrawingAllLines;
+            _movingService.OnSuccessMoved -= OnSuccessMoved;
+            _movingService.OnFailMoved -= OnFailMoved;
         }
     }
 }

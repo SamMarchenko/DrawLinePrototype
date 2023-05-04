@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Scripts.Data;
-using UnityEngine;
+using Data;
+using Factories;
+using Views;
 
 namespace Scripts
 {
@@ -11,7 +11,7 @@ namespace Scripts
         private readonly PlayerFinishFactory _factory;
         private readonly SpawnPositions _spawnPositions;
         private readonly LevelColorSettings _levelColorSettings;
-        public Dictionary<Unit, Finish> PlayerFinishDictionary = new Dictionary<Unit, Finish>();
+        public Dictionary<UnitView, FinishView> PlayerFinishDictionary = new Dictionary<UnitView, FinishView>();
 
         public PlayersFinishesProvider(PlayerFinishFactory factory, SpawnPositions spawnPositions, LevelColorSettings levelColorSettings)
         {
@@ -21,9 +21,9 @@ namespace Scripts
             Init();
         }
 
-        public Unit[] GetUnits()
+        public UnitView[] GetUnits()
         {
-            Unit[] units = new Unit[PlayerFinishDictionary.Count];
+            UnitView[] units = new UnitView[PlayerFinishDictionary.Count];
 
             for (var i = 0; i < PlayerFinishDictionary.Keys.Count; i++)
             {
@@ -46,8 +46,6 @@ namespace Scripts
                 var finish = _factory.GetFinish(i, _levelColorSettings.FinishCollor[i]);
                 PlayerFinishDictionary.Add(player,finish);
             }
-            // PlayerFinishDictionary.Add(_factory.GetPlayer(0, ), _factory.GetFinish(0, Color.blue));
-            // PlayerFinishDictionary.Add(_factory.GetPlayer(1, Color.magenta), _factory.GetFinish(1, Color.red));
         }
     }
 }

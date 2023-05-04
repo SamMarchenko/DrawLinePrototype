@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
+using Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Scripts
+namespace Views
 {
-    public class Unit : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
+    public class UnitView : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
         [SerializeField] private List<Vector3> _path = new List<Vector3>();
         [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -20,8 +19,6 @@ namespace Scripts
         private float _currentTime = 0f;
 
 
-        
-        
         public bool IsPointed;
         public SpriteRenderer SpriteRenderer => _spriteRenderer;
         public Action OnCollision;
@@ -32,14 +29,28 @@ namespace Scripts
         {
             _path = points;
             _pathLength = BezierUtility.FindPathLength(_path);
-
-
             _speed = _pathLength / _moveTime;
-
 
             Moving();
         }
 
+        public void OnTriggerEnter2D(Collider2D col)
+        {
+            var target = col.GetComponent<UnitView>();
+            if (target != null || col.CompareTag("Barrier"))
+            {
+                OnCollision?.Invoke();
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData) =>
+            IsPointed = false;
+
+        public void OnPointerEnter(PointerEventData eventData) =>
+            IsPointed = true;
+
+        public void StopMoving() => 
+            _sequence?.Kill();
 
         private void Moving()
         {
@@ -50,31 +61,6 @@ namespace Scripts
                 .To(() => 0f, t => { transform.position = BezierUtility.BezierPoint(t, _path); }, 1f,
                     moveTime).SetEase(Ease.InOutSine));
             _sequence.OnComplete(() => { OnFinish?.Invoke(); });
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            IsPointed = false;
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            IsPointed = true;
-        }
-
-        public void OnTriggerEnter2D(Collider2D col)
-        {
-            var target = col.GetComponent<Unit>();
-            if (target != null || col.CompareTag("Barrier"))
-            {
-                OnCollision?.Invoke();
-            }
-        }
-        
-
-        public void StopMoving()
-        {
-            _sequence?.Kill();
         }
     }
 }

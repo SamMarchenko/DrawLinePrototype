@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scripts.Data
+namespace Data
 {
     [CreateAssetMenu]
     public class LevelColorSettings : ScriptableObject

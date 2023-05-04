@@ -1,33 +1,30 @@
-﻿using Scripts.Data;
+﻿using Scripts;
 using UnityEngine;
+using Views;
 
-namespace Scripts
+namespace Factories
 {
     public class PlayerFinishFactory
     {
-        private readonly Unit _playerPrefab;
-        private readonly Finish _finishPrefab;
+        private readonly UnitView _playerPrefab;
+        private readonly FinishView _finishViewPrefab;
         private readonly SpawnPositions _spawnPositions;
 
 
-        public PlayerFinishFactory(Unit playerPrefab, Finish finishPrefab, SpawnPositions spawnPositions )
+        public PlayerFinishFactory(UnitView playerPrefab, FinishView finishViewPrefab, SpawnPositions spawnPositions )
         {
             _playerPrefab = playerPrefab;
-            _finishPrefab = finishPrefab;
+            _finishViewPrefab = finishViewPrefab;
             _spawnPositions = spawnPositions;
         }
 
-        public Unit GetPlayer(int index, Color color)
-        {
-            return CreatePlayer(index, color);
-        }
+        public UnitView GetPlayer(int index, Color color) => 
+            CreatePlayer(index, color);
 
-        public Finish GetFinish(int index, Color color)
-        {
-            return CreateFinish(index, color);
-        }
+        public FinishView GetFinish(int index, Color color) => 
+            CreateFinish(index, color);
 
-        private Unit CreatePlayer(int index, Color color)
+        private UnitView CreatePlayer(int index, Color color)
         {
             var player = MonoBehaviour.Instantiate(_playerPrefab);
             player.transform.position = _spawnPositions.PlayersSpawnPos[index].position;
@@ -35,9 +32,9 @@ namespace Scripts
             return player;
         }
 
-        private Finish CreateFinish(int index, Color color)
+        private FinishView CreateFinish(int index, Color color)
         {
-            var finish = MonoBehaviour.Instantiate(_finishPrefab);
+            var finish = MonoBehaviour.Instantiate(_finishViewPrefab);
             finish.transform.position = _spawnPositions.FinishSpawnPos[index].position;
             finish.SpriteRenderer.color = color;
             return finish;

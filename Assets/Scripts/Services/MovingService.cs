@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Scripts;
 using UnityEngine;
+using Views;
 
-namespace Scripts
+namespace Services
 {
     public class MovingService
     {
         private readonly PlayersFinishesProvider _playersFinishesProvider;
         private readonly DrawLineService _drawLineService;
-        private Dictionary<Unit, List<Vector3>> _playersPaths;
-        private Unit[] _players;
+        private Dictionary<UnitView, List<Vector3>> _playersPaths;
+        private UnitView[] _players;
 
         public Action OnFailMoved;
         public Action OnSuccessMoved;
@@ -19,6 +21,27 @@ namespace Scripts
         {
             _playersFinishesProvider = playersFinishesProvider;
             _drawLineService = drawLineService;
+        }
+
+        public void BeginMove()
+        {
+            _players = _playersFinishesProvider.GetUnits();
+            SubscribePlayers();
+            _playersPaths = _drawLineService.PlayerPathDictionary;
+
+            foreach (var player in _players)
+            {
+                var path = _playersPaths[player];
+                player.InitUnitMoving(path);
+            }
+        }
+
+        public void StopMove()
+        {
+            foreach (var player in _players)
+            {
+                player.StopMoving();
+            }
         }
 
         private void SubscribePlayers()
@@ -49,27 +72,6 @@ namespace Scripts
         {
             OnSuccessMoved?.Invoke();
             UnSubscribePlayers();
-        }
-
-        public void BeginMove()
-        {
-            _players = _playersFinishesProvider.GetUnits();
-            SubscribePlayers();
-            _playersPaths = _drawLineService.PlayerPathDictionary;
-
-            foreach (var player in _players)
-            {
-                var path = _playersPaths[player];
-                player.InitUnitMoving(path);
-            }
-        }
-
-        public void StopMove()
-        {
-            foreach (var player in _players)
-            {
-                player.StopMoving();
-            }
         }
     }
 }

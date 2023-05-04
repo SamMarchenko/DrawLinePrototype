@@ -1,8 +1,8 @@
 using System;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using Views;
 
-namespace Scripts
+namespace Services
 {
     public class FailScreenService : IDisposable
     {
@@ -13,30 +13,22 @@ namespace Scripts
         public void Init(FailScreenView view)
         {
             _view = view;
-            _view.RepeatLvlBtn.onClick.AddListener(Call);
+            _view.RepeatLvlBtn.onClick.AddListener(LoadCurrentLevel);
             
             _numberActiveScene = SceneManager.GetActiveScene().buildIndex + 1;
             _currentLevelName = "Level_" + (_numberActiveScene);
         }
 
-        private void Call()
-        {
-            SceneTransition.SwitchToScene(_currentLevelName);
-        }
-
-        public void Show()
-        {
+        public void Show() => 
             _view.gameObject.SetActive(true);
-        }
-        
-        public void Hide()
-        {
-            _view.gameObject.SetActive(false);
-        }
 
-        public void Dispose()
-        {
+        public void Hide() => 
+            _view.gameObject.SetActive(false);
+
+        public void Dispose() => 
             _view.RepeatLvlBtn.onClick.RemoveAllListeners();
-        }
+
+        private void LoadCurrentLevel() => 
+            SceneTransition.SwitchToScene(_currentLevelName);
     }
 }

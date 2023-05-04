@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts
+namespace Views
 {
     public class WinScreenView : MonoBehaviour
     {

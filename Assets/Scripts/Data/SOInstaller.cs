@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace Scripts.Data
+namespace Data
 {
     [CreateAssetMenu(fileName = "SOInstaller", menuName = "Installers/SOInstaller")]
     public class SOInstaller : ScriptableObjectInstaller<SOInstaller>

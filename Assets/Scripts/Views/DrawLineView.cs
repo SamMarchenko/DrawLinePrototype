@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Scripts
+namespace Views
 {
-    public class DrawLine : MonoBehaviour
+    public class DrawLineView : MonoBehaviour
     {
         [SerializeField] private LineRenderer _line;
         [SerializeField] private Vector3 _previousPos;
         [SerializeField, Range(0, 1)] private float minDistance = 0.1f;
 
         public LineRenderer LineRenderer => _line;
-        public int LinePosCount => _line.positionCount;
 
-        public void Init()
-        {
+        public void Init() => 
             _line.positionCount = 1;
-        }
 
         public void Draw()
         {

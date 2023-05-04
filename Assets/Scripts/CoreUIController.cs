@@ -1,6 +1,8 @@
-﻿using TMPro;
+﻿using Services;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Views;
 using Zenject;
 
 namespace Scripts

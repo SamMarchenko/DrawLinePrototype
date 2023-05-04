@@ -48,7 +48,10 @@ namespace Scripts
             _sequence.Append(DOTween
                 .To(() => 0f, t => { transform.position = BezierUtility.BezierPoint(t, DrawnLinePoints); }, 1f,
                     moveTime).SetEase(Ease.InOutSine));
-            _sequence.OnComplete(() => { Debug.Log("Я добежал"); });
+            _sequence.OnComplete(() =>
+            {
+                Debug.Log("Я добежал");
+            });
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -61,6 +64,17 @@ namespace Scripts
         {
             IsPointed = true;
             Debug.Log($"OnPointerDown: {IsPointed}");
+        }
+
+        public void OnTriggerEnter2D(Collider2D col)
+        {
+            Debug.Log("Я врезался во что-то");
+            var target = col.GetComponent<Unit>();
+            if (target != null)
+            {
+                Debug.Log("Я врезался в другого игрока. Проигрыш");
+                _sequence?.Kill();
+            }
         }
     }
 }

@@ -7,13 +7,14 @@ namespace Scripts
     {
         private readonly Unit _playerPrefab;
         private readonly Finish _finishPrefab;
-        private readonly LevelSettings _levelSettings;
+        private readonly SpawnPositions _spawnPositions;
 
-        public PlayerFinishFactory(Unit playerPrefab, Finish finishPrefab, LevelSettings levelSettings)
+
+        public PlayerFinishFactory(Unit playerPrefab, Finish finishPrefab, SpawnPositions spawnPositions )
         {
             _playerPrefab = playerPrefab;
             _finishPrefab = finishPrefab;
-            _levelSettings = levelSettings;
+            _spawnPositions = spawnPositions;
         }
 
         public Unit GetPlayer(int index, Color color)
@@ -29,7 +30,7 @@ namespace Scripts
         private Unit CreatePlayer(int index, Color color)
         {
             var player = MonoBehaviour.Instantiate(_playerPrefab);
-            player.transform.position = _levelSettings.PlayersSpawnPos[index].position;
+            player.transform.position = _spawnPositions.PlayersSpawnPos[index].position;
             player.SpriteRenderer.color = color;
             return player;
         }
@@ -37,7 +38,7 @@ namespace Scripts
         private Finish CreateFinish(int index, Color color)
         {
             var finish = MonoBehaviour.Instantiate(_finishPrefab);
-            finish.transform.position = _levelSettings.FinishSpawnPos[index].position;
+            finish.transform.position = _spawnPositions.FinishSpawnPos[index].position;
             finish.SpriteRenderer.color = color;
             return finish;
         }

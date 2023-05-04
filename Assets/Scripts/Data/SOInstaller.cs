@@ -6,10 +6,10 @@ namespace Scripts.Data
     [CreateAssetMenu(fileName = "SOInstaller", menuName = "Installers/SOInstaller")]
     public class SOInstaller : ScriptableObjectInstaller<SOInstaller>
     {
-        [SerializeField] private LevelSettings _levelSettings;
+        [SerializeField] private LevelColorSettings levelColorSettings;
         public override void InstallBindings()
         {
-            Container.BindInstance(_levelSettings);
+            Container.BindInstance(levelColorSettings);
         }
     }
 }

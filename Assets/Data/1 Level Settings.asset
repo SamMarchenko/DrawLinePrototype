@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb65968c1ba9466d8927ee4de5de21b9, type: 3}
   m_Name: 1 Level Settings
   m_EditorClassIdentifier: 
-  PlayersSpawnPos:
-  - {fileID: 5797442238892126465, guid: df1533d775e63084889a1d02feb1db3b, type: 3}
-  - {fileID: 4283932949722633840, guid: d9bbc001805c07346a3e4eecc23a227d, type: 3}
-  FinishSpawnPos:
-  - {fileID: 2633345906819580822, guid: bf253ea3264c4d242ba413bb62401f29, type: 3}
-  - {fileID: 7321582589121435177, guid: 5140e2b8a38ff484a9d377dacb880764, type: 3}
+  PlayersCollor:
+  - {r: 0, g: 0.7486813, b: 1, a: 1}
+  - {r: 0.990566, g: 0.4438857, b: 0.7523988, a: 1}
+  FinishCollor:
+  - {r: 0, g: 0.9716981, b: 0.6914468, a: 1}
+  - {r: 0.8773585, g: 0.26900145, b: 0.26900145, a: 1}

@@ -9,11 +9,13 @@ namespace Scripts.Installers
         [SerializeField] private Unit _playerPrefab;
         [SerializeField] private Finish _finishPrefab;
         [SerializeField] private DrawLine _linePrefab;
+        [SerializeField] private SpawnPositions _spawnPositions;
         public override void InstallBindings()
         {
             Container.BindInstance(_playerPrefab);
             Container.BindInstance(_finishPrefab);
             Container.BindInstance(_linePrefab);
+            Container.BindInstance(_spawnPositions);
 
             Container.BindInterfacesAndSelfTo<PlayerFinishFactory>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<LineFactory>().AsSingle().NonLazy();

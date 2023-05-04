@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e10173da84ad492f8c39219084e85be1, type: 3}
   m_Name: SOInstaller
   m_EditorClassIdentifier: 
-  _levelSettings: {fileID: 11400000, guid: 043e6366fd683764d8d4c8b81478a426, type: 2}
+  levelColorSettings: {fileID: 11400000, guid: 043e6366fd683764d8d4c8b81478a426, type: 2}

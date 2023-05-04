@@ -26,7 +26,7 @@ namespace Scripts
             foreach (var player in _players)
             {
                 player.OnFinish += OnFinish;
-                player.OnCollisionWithPlayer += OnCollisionWithPlayer;
+                player.OnCollision += OnCollisionWithPlayer;
             }
         }
 
@@ -41,7 +41,7 @@ namespace Scripts
             foreach (var player in _players)
             {
                 player.OnFinish -= OnFinish;
-                player.OnCollisionWithPlayer -= OnCollisionWithPlayer;
+                player.OnCollision -= OnCollisionWithPlayer;
             }
         }
 

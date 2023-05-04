@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StartPos
   - EndPos
+  - Barrier
   layers:
   - Default
   - TransparentFX

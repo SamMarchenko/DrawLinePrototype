@@ -24,7 +24,7 @@ namespace Scripts
         
         public bool IsPointed;
         public SpriteRenderer SpriteRenderer => _spriteRenderer;
-        public Action OnCollisionWithPlayer;
+        public Action OnCollision;
         public Action OnFinish;
 
 
@@ -65,11 +65,12 @@ namespace Scripts
         public void OnTriggerEnter2D(Collider2D col)
         {
             var target = col.GetComponent<Unit>();
-            if (target != null)
+            if (target != null || col.CompareTag("Barrier"))
             {
-                OnCollisionWithPlayer?.Invoke();
+                OnCollision?.Invoke();
             }
         }
+        
 
         public void StopMoving()
         {

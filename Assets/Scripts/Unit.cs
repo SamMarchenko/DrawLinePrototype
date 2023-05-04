@@ -10,6 +10,7 @@ namespace Scripts
 {
     public class Unit : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler
     {
+        [SerializeField] private List<Vector3> _path = new List<Vector3>();
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private float _pathLength;
         private const float _moveTime = 3f;
@@ -19,21 +20,21 @@ namespace Scripts
         private float _currentTime = 0f;
 
 
-        public List<Vector3> DrawnLinePoints = new List<Vector3>();
-
-        public bool CanMove;
+        
+        
         public bool IsPointed;
         public SpriteRenderer SpriteRenderer => _spriteRenderer;
+        public Action OnCollisionWithPlayer;
+        public Action OnFinish;
 
 
         public void InitUnitMoving(List<Vector3> points)
         {
-            DrawnLinePoints = points;
-            _pathLength = BezierUtility.FindPathLength(DrawnLinePoints);
+            _path = points;
+            _pathLength = BezierUtility.FindPathLength(_path);
 
 
             _speed = _pathLength / _moveTime;
-            Debug.Log($"{this.gameObject.name}.Length = {_pathLength}. Speed = {_speed}");
 
 
             Moving();
@@ -46,35 +47,33 @@ namespace Scripts
             _sequence?.Kill();
             _sequence = DOTween.Sequence();
             _sequence.Append(DOTween
-                .To(() => 0f, t => { transform.position = BezierUtility.BezierPoint(t, DrawnLinePoints); }, 1f,
+                .To(() => 0f, t => { transform.position = BezierUtility.BezierPoint(t, _path); }, 1f,
                     moveTime).SetEase(Ease.InOutSine));
-            _sequence.OnComplete(() =>
-            {
-                Debug.Log("Я добежал");
-            });
+            _sequence.OnComplete(() => { OnFinish?.Invoke(); });
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             IsPointed = false;
-            Debug.Log($"OnPointerExit: {IsPointed}");
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             IsPointed = true;
-            Debug.Log($"OnPointerDown: {IsPointed}");
         }
 
         public void OnTriggerEnter2D(Collider2D col)
         {
-            Debug.Log("Я врезался во что-то");
             var target = col.GetComponent<Unit>();
             if (target != null)
             {
-                Debug.Log("Я врезался в другого игрока. Проигрыш");
-                _sequence?.Kill();
+                OnCollisionWithPlayer?.Invoke();
             }
+        }
+
+        public void StopMoving()
+        {
+            _sequence?.Kill();
         }
     }
 }

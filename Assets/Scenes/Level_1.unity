@@ -540,3 +540,15 @@ MonoBehaviour:
   _finishPrefab: {fileID: 4208191487126217861, guid: f9ce54f00fe2ab34288cca16e29c7a19, type: 3}
   _linePrefab: {fileID: -9149085750550077090, guid: 31f95940a09b84f41b6c547d88ec4856, type: 3}
   _spawnPositions: {fileID: 305595487}
+  _coreUIController: {fileID: 1889483560}
+--- !u!114 &1889483560 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1889483560, guid: ac75438e8104fde4da8c75e27bbe98d8, type: 3}
+  m_PrefabInstance: {fileID: 290443335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131de73cb514f79af47d4b12ef5738d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

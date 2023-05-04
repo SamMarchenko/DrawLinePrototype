@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Factories;
-using Unity.Collections;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -11,35 +10,31 @@ namespace Scripts
 {
     public class DrawLineService : ITickable
     {
-        private StartFinishProvider _startFinishProvider;
+        private PlayersFinishesProvider _playersFinishesProvider;
         private readonly LineFactory _lineFactory;
         private List<DrawLine> _lines = new List<DrawLine>();
         private Dictionary<Unit, DrawLine> _playerLineDictionary = new Dictionary<Unit, DrawLine>();
+        private Dictionary<Unit, List<Vector3>> _playersPathDictionary = new Dictionary<Unit, List<Vector3>>();
         private DrawLine _currentLine;
         private Unit _currentPlayer;
         private bool _isDrawing;
 
-        public DrawLineService(StartFinishProvider startFinishProvider, LineFactory lineFactory)
+        public bool CanDraw;
+        public Dictionary<Unit ,List<Vector3>> PlayerPathDictionary => _playersPathDictionary;
+
+        public Action OnFinishDrawingAllLines;
+
+        public DrawLineService(PlayersFinishesProvider playersFinishesProvider, LineFactory lineFactory)
         {
-            _startFinishProvider = startFinishProvider;
+            _playersFinishesProvider = playersFinishesProvider;
             _lineFactory = lineFactory;
         }
         
 
-        //todo: временный код для тестов
-        private void StartPlayerMoving()
-        {
-            foreach (var unit in _playerLineDictionary.Keys)
-            {
-                DrawLine line = _playerLineDictionary[unit];
-                unit.InitUnitMoving(GetPointsFromLine(line.LineRenderer));
-            }
-        }
-
         private List<Vector3> GetPointsFromLine(LineRenderer line)
         {
             Vector3[] pathPoints = new Vector3[line.positionCount];
-            
+
             line.GetPositions(pathPoints);
             return pathPoints.ToList();
         }
@@ -57,12 +52,12 @@ namespace Scripts
 
         private bool CheckFinishLinePos()
         {
-            return _startFinishProvider.PlayerFinishDictionary[_currentPlayer].IsPointed;
+            return _playersFinishesProvider.PlayerFinishDictionary[_currentPlayer].IsPointed;
         }
 
         private bool CheckStartLinePos()
         {
-            var players = _startFinishProvider.PlayerFinishDictionary.Keys;
+            var players = _playersFinishesProvider.PlayerFinishDictionary.Keys;
             foreach (var player in players)
             {
                 if (player.IsPointed)
@@ -84,6 +79,9 @@ namespace Scripts
 
         public void Tick()
         {
+            if (!CanDraw)
+                return;
+
             if (Input.GetMouseButton(0))
             {
                 if (!_isDrawing)
@@ -120,12 +118,25 @@ namespace Scripts
                     _lines.Add(_currentLine);
                     _playerLineDictionary.Add(_currentPlayer, _currentLine);
                     
-                    //todo: временный код для тестов
-                    if (_playerLineDictionary.Count == 2)
+                    if (CheckAllPlayersDraw())
                     {
-                        StartPlayerMoving();
+                        GetAllPathsFromLines();
+                        OnFinishDrawingAllLines?.Invoke();
                     }
                 }
+            }
+        }
+
+        private bool CheckAllPlayersDraw()
+        {
+            return _playerLineDictionary.Count == _playersFinishesProvider.GetPlayersCount();
+        }
+
+        private void GetAllPathsFromLines()
+        {
+            foreach (var (key, value) in _playerLineDictionary)
+            {
+                _playersPathDictionary.Add(key, GetPointsFromLine(value.LineRenderer));
             }
         }
     }
